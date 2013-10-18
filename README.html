@@ -1,0 +1,176 @@
+<h1 id="grindnouscaptcha">GrindNous\Captcha</h1>
+<p>PHP Captcha system (session based): configurable look and different validation modes.</p>
+<p>Features</p>
+<ul>
+<li>Configurable look</li>
+<li>Different types of questions/answers</li>
+<li>Timer: minimum and maximum time for validation</li>
+<li>Multiple instances</li>
+</ul>
+<p>Requirements</p>
+<ul>
+<li>PHP 5.3+</li>
+<li>GD 2.0.1+ with FreeType support</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p><strong>Instantiation:</strong></p>
+<pre><code>// Default
+$captcha = new \GrindNous\Captcha\Captcha();
+
+// Settings
+$captcha = new \GrindNous\Captcha\Captcha(array(
+    'property' =&gt; 'value'
+));
+</code></pre>
+<p><strong>Accessing properties:</strong></p>
+<pre><code>// Get property
+$captcha-&gt;prop('property');
+
+// Set property
+$captcha-&gt;prop('property', 'value');
+</code></pre>
+<p><strong>Show captcha:</strong></p>
+<pre><code>// captcha-generator.php
+$captcha-&gt;render();
+// captcha-request-page.php
+&lt;img src="captcha-generator.php" /&gt;
+
+// captcha-request-page.php
+$encodedImage = $captcha-&gt;base64();
+echo '&lt;img src="'.$encodedImage.' /&gt;';
+</code></pre>
+<p><strong>Validation:</strong></p>
+<pre><code>// verify-page.php
+if(\GrindNous\Captcha\Captcha::valid( $userPostedData ))
+    // Valid
+else
+    // Not valid
+</code></pre>
+<p>Specifying the captcha to validate:</p>
+<pre><code>// verify-page.php
+if(\GrindNous\Captcha\Captcha::valid( $userPostedData, $captchaName ))
+</code></pre>
+<h2 id="properties">Properties</h2>
+<p><strong>name</strong></p>
+<p>Name of the session var that will contain the captcha information.</p>
+<pre><code>Default : 'default'
+Options : string
+</code></pre>
+<p><strong>questionType</strong></p>
+<p>Specifies how will generate the validation code.</p>
+<pre><code>Default : normal
+Options : normal | ghost | strikethrough | notStrikethrough
+</code></pre>
+<p><strong>ltr</strong></p>
+<p>Left to right: indicates whether the introduction of characters have to be performed from left to right or vice versa.</p>
+<pre><code>Default : TRUE
+Options : bool
+</code></pre>
+<p><strong>minTimeLapse</strong></p>
+<p>Seconds that must elapse, at least, to take into account the data sent by the user.</p>
+<pre><code>Default : 10
+Options : int
+</code></pre>
+<p><strong>maxTimeLapse</strong></p>
+<p>Elapsed seconds to mark the captcha as invalid.</p>
+<pre><code>Default : 600
+Options : int
+</code></pre>
+<p><strong>width</strong></p>
+<p>Image width.</p>
+<pre><code>Default : 140
+Options : int
+</code></pre>
+<p><strong>height</strong></p>
+<p>Image height.</p>
+<pre><code>Default : 60
+Options : int
+</code></pre>
+<p><strong>imageType</strong></p>
+<p>Image format.</p>
+<pre><code>Default : 'png'
+Options : 'jpeg' | 'gif' | 'png'
+</code></pre>
+<p><strong>bgColor</strong></p>
+<p>Background color.</p>
+<pre><code>Default : '#fff'
+Options : string | array
+</code></pre>
+<p><strong>textColor</strong></p>
+<p>Text color.</p>
+<pre><code>Default : '#333'
+Options : string | array
+</code></pre>
+<p><strong>ghostText</strong></p>
+<p>Display a second set of semitransparent chars.</p>
+<pre><code>Default : TRUE
+Options : bool
+</code></pre>
+<p><strong>ghostTextColo </strong></p>
+<p>Color of semitransparent chars.</p>
+<pre><code>Default : '#333'
+Options : string | array
+</code></pre>
+<p><strong>lines</strong></p>
+<p>Strikethrough characters randomly.</p>
+<pre><code>Default : TRUE
+Options : bool
+</code></pre>
+<p><strong>lineColor</strong></p>
+<p>Color of lines.</p>
+<pre><code>Default : '#333'
+Options : string | array
+</code></pre>
+<p><strong>lineWidth</strong></p>
+<p>Width of the lines.</p>
+<pre><code>Default : 2
+Options : int
+</code></pre>
+<p><strong>circles</strong></p>
+<p>Add semitransparent circles.</p>
+<pre><code>Default : TRUE
+Options : bool
+</code></pre>
+<p><strong>circleColor</strong></p>
+<p>Color of circles.</p>
+<pre><code>Default : '#333'
+Options : string | array
+</code></pre>
+<p><strong>length</strong></p>
+<p>Number of characters.</p>
+<pre><code>Default : 4
+Options : int
+</code></pre>
+<p><strong>fontFile</strong></p>
+<p>TrueType font to use.</p>
+<pre><code>Default : 'ttf_molten/molten.ttf'
+Options : string
+</code></pre>
+<p><strong>fontSize</strong></p>
+<p>Font size.</p>
+<pre><code>Default : 22
+Options : int
+</code></pre>
+<p><strong>letterSpacing</strong></p>
+<p>Character spacing.</p>
+<pre><code>Default : 0
+Options : int
+</code></pre>
+<p>__</p>
+<ol>
+<li>
+<p>Each type of question will affect the valid response; must inform the user to enter the correct answer on each case:</p>
+<ul>
+<li>normal: insert all opaque chars (affected by textColor).</li>
+<li>ghost: insert all semitransparent chars (affected by ghostTextColor).</li>
+<li>strikethrough: insert only the strikethrough chars.</li>
+<li>notStrikethrough: insert only the chars without strikethrough.</li>
+</ul>
+</li>
+<li>
+<p>Color properties: hexadecimal color value, string of comma separated RGB values or indexed array with RGB values.</p>
+</li>
+<li>
+<p>The font will be searched in the "fonts" folder starting from the location of the class file.</p>
+</li>
+</ol>
